@@ -90,7 +90,8 @@ class Chef
       option :identity_file,
         :short => "-i IDENTITY_FILE",
         :long => "--identity-file IDENTITY_FILE",
-        :description => "The SSH identity file used for authentication"
+        :description => "The SSH identity file used for authentication",
+				:proc => Proc.new { |i| Chef::Config[:identity_file] = i }
 
       option :prerelease,
         :long => "--prerelease",
@@ -260,7 +261,7 @@ class Chef
         bootstrap.name_args = [fqdn]
         bootstrap.config[:run_list] = config[:run_list]
         bootstrap.config[:ssh_user] = locate_config_value(:ssh_user)
-        bootstrap.config[:identity_file] = config[:identity_file]
+        bootstrap.config[:identity_file] = locate_config_value(:identity_file)
         bootstrap.config[:chef_node_name] = config[:chef_node_name] || server.id
         bootstrap.config[:prerelease] = config[:prerelease]
         bootstrap.config[:bootstrap_version] = locate_config_value(:bootstrap_version)
